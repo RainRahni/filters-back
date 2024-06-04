@@ -1,4 +1,4 @@
 package org.filter.dto;
 
-public record CriteriaCreationDto(String criteriaType, String comparator, String value){
+public record CriteriaCreationDto(String type, String comparator, String metric){
 }

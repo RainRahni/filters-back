@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "filters")
 public class Filter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

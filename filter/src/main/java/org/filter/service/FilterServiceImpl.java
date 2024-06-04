@@ -7,9 +7,10 @@ import org.filter.model.Criteria;
 import org.filter.model.Filter;
 import org.filter.repository.CriteriaRepository;
 import org.filter.repository.FilterRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 @RequiredArgsConstructor
 public class FilterServiceImpl implements FilterService {
     private final FilterRepository filterRepository;
@@ -22,9 +23,11 @@ public class FilterServiceImpl implements FilterService {
         Filter filter = new Filter();
         filter.setName(filterCreationDto.filterName());
         filter.setCriterias(criterias);
+        filterRepository.save(filter);
         for (Criteria criteria : criterias) {
+            criteria.setFilter(filter);
             criteriaRepository.save(criteria);
         }
-        filterRepository.save(filter);
+
     }
 }
