@@ -1,13 +1,13 @@
 package org.filter.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.filter.dto.FilterCreationDto;
+import org.filter.dto.FilterDto;
+import org.filter.model.Filter;
 import org.filter.service.FilterService;
 import org.filter.service.FilterServiceImpl;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("filter")
@@ -16,7 +16,11 @@ public class FilterController {
     private final FilterServiceImpl filterService;
 
     @PostMapping()
-    public void createNewFilter(@RequestBody FilterCreationDto filterCreationDto) {
-        filterService.createNewFilter(filterCreationDto);
+    public void createNewFilter(@RequestBody FilterDto filterDto) {
+        filterService.createNewFilter(filterDto);
+    }
+    @GetMapping()
+    public List<FilterDto> readAllFilters() {
+        return filterService.readAllFilters();
     }
 }

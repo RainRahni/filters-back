@@ -21,7 +21,7 @@ public class Criteria {
     private CriteriaType type;
     private String comparator;
     private String metric;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "filter_id")
     private Filter filter;
 }

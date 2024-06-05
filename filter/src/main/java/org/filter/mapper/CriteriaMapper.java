@@ -1,6 +1,6 @@
 package org.filter.mapper;
 
-import org.filter.dto.CriteriaCreationDto;
+import org.filter.dto.CriteriaDto;
 import org.filter.model.Criteria;
 import org.filter.model.enums.CriteriaType;
 import org.mapstruct.Mapper;
@@ -13,11 +13,13 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CriteriaMapper {
     @Mapping(source = "type", target = "type", qualifiedByName = "stringToEnum")
-    Criteria toCriteria(CriteriaCreationDto dto);
+    Criteria toCriteria(CriteriaDto dto);
 
     @Named("stringToEnum")
     default CriteriaType stringToEnum(String type) {
         return CriteriaType.valueOf(type.toUpperCase());
     }
-    List<Criteria> toCriteriaList(List<CriteriaCreationDto> dtoList);
+    List<Criteria> toCriteriaList(List<CriteriaDto> dtoList);
+    CriteriaDto toDto(Criteria criteria);
+    List<CriteriaDto> toDtoList(List<Criteria> criteriaList);
 }

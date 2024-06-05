@@ -20,6 +20,6 @@ public class Filter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(mappedBy = "filter")
+    @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL)
     private List<Criteria> criterias = new ArrayList<>();
 }
