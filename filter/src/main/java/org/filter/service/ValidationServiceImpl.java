@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.filter.config.Constants;
 import org.filter.dto.CriteriaDto;
 import org.filter.dto.FilterDto;
+import org.filter.model.enums.CriteriaType;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,12 @@ public class ValidationServiceImpl implements ValidationService {
                 criteriaDto.comparator().isEmpty() ||
                 criteriaDto.metric().isEmpty();
 
+        boolean isCorrectType = Arrays.stream(CriteriaType.values())
+                .anyMatch(criteriaType -> criteriaType.name().equalsIgnoreCase(criteriaDto.type()));
+
+        if (isSomethingEmpty || !isCorrectType) {
+            return true;
+        }
         for (String type: Constants.TYPES) {
             Class<?> expectedClass = Constants.TYPE_METRIC_MAP.get(type);
             Class<?> actualClass = getClassForParameter(criteriaDto.metric());
@@ -36,8 +44,7 @@ public class ValidationServiceImpl implements ValidationService {
                 return true;
             }
         }
-        return isSomethingEmpty;
-
+        return false;
     }
     private Class<?> getClassForParameter(String parameter) {
         if (parameter.matches(Constants.NUMBER_PATTERN)) {
