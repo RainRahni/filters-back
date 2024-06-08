@@ -44,14 +44,14 @@ public class ValidationServiceImpl implements ValidationService {
         for (String type: Constants.TYPES) {
             Class<?> expectedClass = Constants.TYPE_METRIC_MAP.get(type);
             Class<?> actualClass = getClassForParameter(criteriaDto.metric());
-            if (!expectedClass.isAssignableFrom(actualClass)) {
-                return true;
+            if (expectedClass.isAssignableFrom(actualClass)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
     private Class<?> getClassForParameter(String parameter) {
-        log.info("Validating class: {}", parameter);
+        log.info("Validating parameter: {}", parameter);
         if (parameter.matches(Constants.NUMBER_PATTERN)) {
             return Number.class;
         } else if (parameter.matches(Constants.DATE_PATTERN)) {

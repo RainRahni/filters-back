@@ -1,5 +1,6 @@
 package org.filter.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.filter.dto.CriteriaDto;
@@ -7,7 +8,6 @@ import org.filter.dto.FilterDto;
 import org.filter.mapper.CriteriaMapper;
 import org.filter.model.Criteria;
 import org.filter.model.Filter;
-import org.filter.repository.CriteriaRepository;
 import org.filter.repository.FilterRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +18,20 @@ import java.util.List;
 @Slf4j
 public class FilterServiceImpl implements FilterService {
     private final FilterRepository filterRepository;
-    private final CriteriaRepository criteriaRepository;
-    private final CriteriaMapper criteriaMapper;
     private final ValidationServiceImpl validationService;
+    private final CriteriaServiceImpl criteriaService;
+    private final CriteriaMapper criteriaMapper;
 
     @Override
+    @Transactional
     public void createNewFilter(FilterDto filterDto) {
         validationService.validateFilterCreation(filterDto);
         log.info("Create new filter");
         Filter filter = new Filter();
         filter.setName(filterDto.filterName());
-        List<Criteria> criterias = criteriaMapper.toCriteriaList(filterDto.criterias());
         filterRepository.save(filter);
         log.info("Saved filter");
-        for (Criteria criteria : criterias) {
-            criteria.setFilter(filter);
-            criteriaRepository.save(criteria);
-        }
-        log.info("Saved criterias");
+        criteriaService.createCriterias(filterDto.criterias(), filter);
     }
 
     @Override
