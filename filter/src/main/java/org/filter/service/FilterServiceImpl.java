@@ -1,6 +1,7 @@
 package org.filter.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.filter.dto.CriteriaDto;
 import org.filter.dto.FilterDto;
 import org.filter.mapper.CriteriaMapper;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FilterServiceImpl implements FilterService {
     private final FilterRepository filterRepository;
     private final CriteriaRepository criteriaRepository;
@@ -23,18 +25,22 @@ public class FilterServiceImpl implements FilterService {
     @Override
     public void createNewFilter(FilterDto filterDto) {
         validationService.validateFilterCreation(filterDto);
+        log.info("Create new filter");
         Filter filter = new Filter();
         filter.setName(filterDto.filterName());
         List<Criteria> criterias = criteriaMapper.toCriteriaList(filterDto.criterias());
         filterRepository.save(filter);
+        log.info("Saved filter");
         for (Criteria criteria : criterias) {
             criteria.setFilter(filter);
             criteriaRepository.save(criteria);
         }
+        log.info("Saved criterias");
     }
 
     @Override
     public List<FilterDto> readAllFilters() {
+        log.info("Read All Filters");
         List<Filter> filters = filterRepository.findAll();
         List<FilterDto> filterDtos = new ArrayList<>();
         for (Filter filter : filters) {
