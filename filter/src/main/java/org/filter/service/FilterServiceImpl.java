@@ -18,9 +18,11 @@ public class FilterServiceImpl implements FilterService {
     private final FilterRepository filterRepository;
     private final CriteriaRepository criteriaRepository;
     private final CriteriaMapper criteriaMapper;
+    private final ValidationServiceImpl validationService;
 
     @Override
     public void createNewFilter(FilterDto filterDto) {
+        validationService.validateFilterCreation(filterDto);
         Filter filter = new Filter();
         filter.setName(filterDto.filterName());
         List<Criteria> criterias = criteriaMapper.toCriteriaList(filterDto.criterias());

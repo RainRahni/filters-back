@@ -2,8 +2,6 @@ package org.filter.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.filter.dto.FilterDto;
-import org.filter.model.Filter;
-import org.filter.service.FilterService;
 import org.filter.service.FilterServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
