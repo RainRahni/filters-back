@@ -6,16 +6,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.filter.config.Constants;
 import org.filter.dto.CriteriaDto;
 import org.filter.dto.FilterDto;
+import org.filter.mapper.CriteriaMapperImpl;
+import org.filter.model.Criteria;
+import org.filter.model.Filter;
 import org.filter.model.enums.CriteriaType;
+import org.filter.repository.FilterRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class ValidationServiceImpl implements ValidationService {
+    private final FilterRepository filterRepository;
+    private final CriteriaMapperImpl criteriaMapperImpl;
 
     @Override
     public void validateFilterCreation(FilterDto filterDto) {
@@ -25,7 +33,7 @@ public class ValidationServiceImpl implements ValidationService {
         for (CriteriaDto criteriaDtos: filterDto.criterias()) {
             isInvalidCriteria = validateCriteriaDto(criteriaDtos);
         }
-        if (isInvalidFilterName || isInvalidCriteria) {
+        if (isInvalidFilterName || isInvalidCriteria || !isUniqueFilter(filterDto)) {
             throw new ValidationException(Constants.INVALID_INPUT_MESSAGE);
         }
     }
@@ -58,5 +66,20 @@ public class ValidationServiceImpl implements ValidationService {
             return LocalDate.class;
         }
         return String.class;
+    }
+    private boolean isUniqueFilter(FilterDto filterDto) {
+        boolean isNamePresent = filterRepository.existsByName(filterDto.filterName());
+        List<Filter> existingFilters = filterRepository.findAll();
+        List<Criteria> newCriterias = criteriaMapperImpl.toCriteriaList(filterDto.criterias());
+        boolean isUniqueCriterias = true;
+        for (Filter existingFilter : existingFilters) {
+            log.info("checking existing criterias in database: {} and new filter criterias: {}",
+                    existingFilter.getCriterias(), newCriterias);
+            if (new HashSet<>(newCriterias).equals(new HashSet<>(existingFilter.getCriterias()))) {
+                isUniqueCriterias = false;
+                break;
+            }
+        }
+        return isUniqueCriterias && !isNamePresent;
     }
 }
