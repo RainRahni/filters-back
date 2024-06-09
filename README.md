@@ -1,6 +1,7 @@
 # Filters Back-End
 
-This is a backend application for managing filters, built with Spring Boot and Java.
+This is a backend application for managing filters. The application allows you to create filters with diffrent 
+criterias. There are 3 criteria types: Amount, Title and Date.
 
 ## Requirements
 
