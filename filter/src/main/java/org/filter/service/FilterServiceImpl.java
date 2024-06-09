@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.filter.dto.CriteriaDto;
 import org.filter.dto.FilterDto;
 import org.filter.mapper.CriteriaMapper;
+import org.filter.mapper.FilterMapper;
+import org.filter.model.Criteria;
 import org.filter.model.Filter;
 import org.filter.repository.FilterRepository;
 import org.springframework.stereotype.Service;
@@ -20,17 +22,16 @@ public class FilterServiceImpl implements FilterService {
     private final ValidationServiceImpl validationService;
     private final CriteriaServiceImpl criteriaService;
     private final CriteriaMapper criteriaMapper;
+    private final FilterMapper filterMapper;
 
     @Override
-    @Transactional
     public void createNewFilter(FilterDto filterDto) {
         validationService.validateFilterCreation(filterDto);
         log.info("Create new filter");
-        Filter filter = new Filter();
-        filter.setName(filterDto.filterName());
+        Filter filter = filterMapper.toFilter(filterDto);
         filterRepository.save(filter);
-        log.info("Saved filter");
         criteriaService.createCriterias(filterDto.criterias(), filter);
+        log.info("Saved filter");
     }
 
     @Override

@@ -28,7 +28,7 @@ public class ValidationServiceImpl implements ValidationService {
     @Override
     public void validateFilterCreation(FilterDto filterDto) {
         log.info("Validating filter creation");
-        boolean isInvalidFilterName = filterDto.filterName().isEmpty();
+        boolean isInvalidFilterName = filterDto.name().isEmpty();
         boolean isInvalidCriteria = false;
         for (CriteriaDto criteriaDtos: filterDto.criterias()) {
             isInvalidCriteria = validateCriteriaDto(criteriaDtos);
@@ -68,7 +68,7 @@ public class ValidationServiceImpl implements ValidationService {
         return String.class;
     }
     private boolean isUniqueFilter(FilterDto filterDto) {
-        boolean isNamePresent = filterRepository.existsByName(filterDto.filterName());
+        boolean isNamePresent = filterRepository.existsByName(filterDto.name());
         List<Filter> existingFilters = filterRepository.findAll();
         List<Criteria> newCriterias = criteriaMapperImpl.toCriteriaList(filterDto.criterias());
         boolean isUniqueCriterias = true;
