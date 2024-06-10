@@ -30,10 +30,14 @@ public class ValidationServiceImpl implements ValidationService {
         log.info("Validating filter creation");
         boolean isInvalidFilterName = filterDto.name().isEmpty();
         boolean isInvalidCriteria = false;
-        for (CriteriaDto criteriaDtos: filterDto.criterias()) {
-            isInvalidCriteria = validateCriteriaDto(criteriaDtos);
+
+        boolean isEnoughCriterias = filterDto.criterias().size() >= Constants.MINIMUM_REQUIRED_CRITERIAS;
+        if (isEnoughCriterias) {
+            for (CriteriaDto criteriaDtos: filterDto.criterias()) {
+                isInvalidCriteria = validateCriteriaDto(criteriaDtos);
+            }
         }
-        if (isInvalidFilterName || isInvalidCriteria || !isUniqueFilter(filterDto)) {
+        if (isInvalidFilterName || isInvalidCriteria || !isEnoughCriterias || !isUniqueFilter(filterDto)) {
             throw new ValidationException(Constants.INVALID_INPUT_MESSAGE);
         }
     }
