@@ -25,5 +25,4 @@ public class CriteriaServiceImpl implements CriteriaService {
         }
         log.info("Saved criteria");
     }
-
 }

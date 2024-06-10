@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -52,7 +53,9 @@ class ValidationServiceImplTest {
         CriteriaDto criteriaDto = new CriteriaDto("AMOUNT", "More", "4");
         FilterDto filterDto = new FilterDto("", List.of(criteriaDto));
 
-        assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        Exception exception =
+                assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        assertEquals(Constants.INVALID_INPUT_MESSAGE, exception.getMessage());
     }
 
     @Test
@@ -60,21 +63,25 @@ class ValidationServiceImplTest {
         CriteriaDto criteriaDto = new CriteriaDto("", "More", "4");
         FilterDto filterDto = new FilterDto("Test", List.of(criteriaDto));
 
-        assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        Exception exception =
+                assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        assertEquals(Constants.INVALID_INPUT_MESSAGE, exception.getMessage());
     }
     @Test
     void Should_ThrowException_When_InvalidCriteriaType() {
         CriteriaDto criteriaDto = new CriteriaDto("DressCode", "Can be", "Black");
         FilterDto filterDto = new FilterDto("Test", List.of(criteriaDto));
-
-        assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        Exception exception =
+                assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        assertEquals(Constants.INVALID_INPUT_MESSAGE, exception.getMessage());
     }
     @Test
     void Should_ThrowException_When_InvalidCriteriaParameter() {
         CriteriaDto criteriaDto = new CriteriaDto("AMOUNT", "More", "Black");
         FilterDto filterDto = new FilterDto("Test", List.of(criteriaDto));
-
-        assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        Exception exception =
+                assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        assertEquals(Constants.INVALID_INPUT_MESSAGE, exception.getMessage());
     }
     @Test
     void Should_ThrowException_When_NotEnoughCriterias() {
@@ -84,15 +91,18 @@ class ValidationServiceImplTest {
             criteriaDtoList.add(criteriaDto);
         }
         FilterDto filterDto = new FilterDto("Test", criteriaDtoList);
-
-        assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        Exception exception =
+                assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        assertEquals(Constants.INVALID_INPUT_MESSAGE, exception.getMessage());
     }
     @Test
     void Should_ThrowException_When_NotUniqueName() {
         CriteriaDto criteriaDto = new CriteriaDto("AMOUNT", "More", "4");
         FilterDto filterDto = new FilterDto("Test", List.of(criteriaDto));
         when(filterRepository.existsByName("Test")).thenReturn(true);
-        assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        Exception exception =
+                assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        assertEquals(Constants.INVALID_INPUT_MESSAGE, exception.getMessage());
     }
     @Test
     void Should_ThrowException_When_NotUniqueCriteria() {
@@ -110,6 +120,8 @@ class ValidationServiceImplTest {
                 .build();
         when(filterRepository.findAll()).thenReturn(List.of(filter));
         when(criteriaMapper.toCriteriaList(List.of(criteriaDto))).thenReturn(List.of(criteria));
-        assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        Exception exception =
+                assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
+        assertEquals(Constants.INVALID_INPUT_MESSAGE, exception.getMessage());
     }
 }

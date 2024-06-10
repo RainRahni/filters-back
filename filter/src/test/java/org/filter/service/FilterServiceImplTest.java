@@ -81,8 +81,9 @@ class FilterServiceImplTest {
         FilterDto filterDto = new FilterDto("", criteriaDtoList);
         doThrow(new ValidationException(Constants.INVALID_INPUT_MESSAGE))
                 .when(validationService).validateFilterCreation(filterDto);
-
-        assertThrows(ValidationException.class, () -> filterService.createNewFilter(filterDto));
+        Exception exception =
+                assertThrows(ValidationException.class, () -> filterService.createNewFilter(filterDto));
+        assertEquals(Constants.INVALID_INPUT_MESSAGE, exception.getMessage());
     }
     @Test
     void Should_ReturnFilters_When_MultipleFilters() {
