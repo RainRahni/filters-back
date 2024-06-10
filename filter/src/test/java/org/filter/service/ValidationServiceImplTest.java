@@ -4,7 +4,6 @@ import jakarta.validation.ValidationException;
 import org.filter.config.Constants;
 import org.filter.dto.CriteriaDto;
 import org.filter.dto.FilterDto;
-import org.filter.mapper.CriteriaMapper;
 import org.filter.mapper.CriteriaMapperImpl;
 import org.filter.model.Criteria;
 import org.filter.model.Filter;
@@ -19,9 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ValidationServiceImplTest {
@@ -32,8 +30,26 @@ class ValidationServiceImplTest {
     @InjectMocks
     private ValidationServiceImpl validationService;
     @Test
+    void Should_ValidateCreation_When_CorrectInput() {
+        CriteriaDto criteriaDto = new CriteriaDto("AMOUNT", "More", "4");
+        FilterDto filterDto = new FilterDto("Test", List.of(criteriaDto));
+
+        Criteria criteria = Criteria.builder()
+                .type(CriteriaType.AMOUNT)
+                .comparator("More")
+                .metric("4")
+                .build();
+        when(criteriaMapper.toCriteriaList(List.of(criteriaDto))).thenReturn(List.of(criteria));
+
+        validationService.validateFilterCreation(filterDto);
+
+        verify(criteriaMapper, times(1)).toCriteriaList(List.of(criteriaDto));
+        verify(filterRepository, times(1)).findAll();
+        verify(filterRepository, times(1)).existsByName(filterDto.name());
+    }
+    @Test
     void Should_ThrowException_When_InvalidName() {
-        CriteriaDto criteriaDto = new CriteriaDto("Amount", "More", "4");
+        CriteriaDto criteriaDto = new CriteriaDto("AMOUNT", "More", "4");
         FilterDto filterDto = new FilterDto("", List.of(criteriaDto));
 
         assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
@@ -93,7 +109,7 @@ class ValidationServiceImplTest {
                 .criterias(List.of(criteria))
                 .build();
         when(filterRepository.findAll()).thenReturn(List.of(filter));
-
+        when(criteriaMapper.toCriteriaList(List.of(criteriaDto))).thenReturn(List.of(criteria));
         assertThrows(ValidationException.class, () -> validationService.validateFilterCreation(filterDto));
     }
 }
