@@ -38,7 +38,7 @@ class CriteriaServiceImplTest {
         when(criteriaMapper.toCriteriaList(dtos)).thenReturn(List.of(criteria));
         when(criteriaRepository.save(any(Criteria.class))).thenReturn(criteria);
 
-        criteriaService.createCriterias(dtos, filter);
+        criteriaService.createCriteria(dtos, filter);
 
         verify(criteriaRepository, times(1)).save(criteria);
         verify(criteriaMapper, times(1)).toCriteriaList(dtos);

@@ -8,6 +8,6 @@ import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface FilterMapper {
-    @Mapping(target = "criterias", ignore = true)
+    @Mapping(target = "criteria", ignore = true)
     Filter toFilter(FilterDto filterDto);
 }

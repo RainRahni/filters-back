@@ -116,7 +116,7 @@ class ValidationServiceImplTest {
                 .build();
         Filter filter = Filter.builder()
                 .name("ExistingFilter")
-                .criterias(List.of(criteria))
+                .criteria(List.of(criteria))
                 .build();
         when(filterRepository.findAll()).thenReturn(List.of(filter));
         when(criteriaMapper.toCriteriaList(List.of(criteriaDto))).thenReturn(List.of(criteria));

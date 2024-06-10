@@ -52,25 +52,25 @@ class FilterServiceImplTest {
                 .build();
         Filter filter = Filter.builder()
                 .name("TestFilter")
-                .criterias(List.of(criteria))
+                .criteria(List.of(criteria))
                 .build();
         criteria.setFilter(filter);
 
         doNothing().when(validationService).validateFilterCreation(filterDto);
         when(filterMapper.toFilter(filterDto)).thenReturn(filter);
         when(filterRepository.save(filter)).thenReturn(filter);
-        doNothing().when(criteriaService).createCriterias(anyList(), any(Filter.class));
+        doNothing().when(criteriaService).createCriteria(anyList(), any(Filter.class));
 
         filterService.createNewFilter(filterDto);
 
         verify(validationService, times(1)).validateFilterCreation(filterDto);
         verify(filterMapper, times(1)).toFilter(filterDto);
         verify(filterRepository, times(1)).save(filter);
-        verify(criteriaService, times(1)).createCriterias(criteriaDtoList, filter);
+        verify(criteriaService, times(1)).createCriteria(criteriaDtoList, filter);
 
         assertEquals(filterDto.name(), filter.getName());
-        assertEquals(1, filter.getCriterias().size());
-        assertEquals(criteria, filter.getCriterias().get(0));
+        assertEquals(1, filter.getCriteria().size());
+        assertEquals(criteria, filter.getCriteria().get(0));
     }
 
     @Test
@@ -90,13 +90,13 @@ class FilterServiceImplTest {
         Criteria criteriaOne = Criteria.builder().type(CriteriaType.AMOUNT).build();
         Filter filterOne = Filter.builder()
                 .name("FilterOne")
-                .criterias(List.of(criteriaOne))
+                .criteria(List.of(criteriaOne))
                 .build();
 
         Criteria criteriaTwo = Criteria.builder().type(CriteriaType.TITLE).build();
         Filter filterTwo = Filter.builder()
                 .name("FilterTwo")
-                .criterias(List.of(criteriaTwo))
+                .criteria(List.of(criteriaTwo))
                 .build();
         CriteriaDto criteriaDtoOne = new CriteriaDto("Amount", "More", "4");
         FilterDto expectedFilterDtoOne = new FilterDto("FilterOne", List.of(criteriaDtoOne));
@@ -105,8 +105,8 @@ class FilterServiceImplTest {
         FilterDto expectedFilterDtoTwo = new FilterDto("FilterTwo", List.of(criteriaDtoTwo));
 
         when(filterRepository.findAll()).thenReturn(Arrays.asList(filterOne, filterTwo));
-        when(criteriaMapper.toDtoList(filterOne.getCriterias())).thenReturn(List.of(criteriaDtoOne));
-        when(criteriaMapper.toDtoList(filterTwo.getCriterias())).thenReturn(List.of(criteriaDtoTwo));
+        when(criteriaMapper.toDtoList(filterOne.getCriteria())).thenReturn(List.of(criteriaDtoOne));
+        when(criteriaMapper.toDtoList(filterTwo.getCriteria())).thenReturn(List.of(criteriaDtoTwo));
         List<FilterDto> result = filterService.readAllFilters();
 
         verify(filterRepository, times(1)).findAll();
@@ -122,7 +122,7 @@ class FilterServiceImplTest {
         Criteria criteriaOne = Criteria.builder().type(CriteriaType.AMOUNT).build();
         Filter filterOne = Filter.builder()
                 .name("FilterOne")
-                .criterias(List.of(criteriaOne))
+                .criteria(List.of(criteriaOne))
                 .build();
 
         CriteriaDto criteriaDtoOne = new CriteriaDto("Amount", "More", "4");
@@ -130,7 +130,7 @@ class FilterServiceImplTest {
 
 
         when(filterRepository.findAll()).thenReturn(Collections.singletonList(filterOne));
-        when(criteriaMapper.toDtoList(filterOne.getCriterias())).thenReturn(List.of(criteriaDtoOne));
+        when(criteriaMapper.toDtoList(filterOne.getCriteria())).thenReturn(List.of(criteriaDtoOne));
         List<FilterDto> result = filterService.readAllFilters();
 
         verify(filterRepository, times(1)).findAll();

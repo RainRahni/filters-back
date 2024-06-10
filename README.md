@@ -1,7 +1,7 @@
 # Filters Back-End
 
 This is a backend application for managing filters. The application allows you to create filters with diffrent 
-criterias. There are 3 criteria types: Amount, Title and Date.
+criteria. There are 3 criteria types: Amount, Title and Date.
 
 ## Requirements
 
@@ -21,3 +21,16 @@ criterias. There are 3 criteria types: Amount, Title and Date.
     - ./gradlew bootrun
 
 Springdoc: http://localhost:8080/swagger-ui/index.html#/
+
+## Test data
+Filter 1: 
+   - FilterOne
+   - Criteria:
+     - Amount, More, 5
+     - Title, Starts with, Meow
+
+
+Filter 2:
+   - FilterTwo
+   - Criteria:
+      - Title, Starts with, Meow

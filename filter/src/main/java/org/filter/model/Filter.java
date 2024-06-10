@@ -19,5 +19,5 @@ public class Filter {
     private Long id;
     private String name;
     @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL)
-    private List<Criteria> criterias = new ArrayList<>();
+    private List<Criteria> criteria = new ArrayList<>();
 }

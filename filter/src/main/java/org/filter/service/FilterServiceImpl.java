@@ -30,7 +30,7 @@ public class FilterServiceImpl implements FilterService {
         log.info("Create new filter");
         Filter filter = filterMapper.toFilter(filterDto);
         filterRepository.save(filter);
-        criteriaService.createCriterias(filterDto.criterias(), filter);
+        criteriaService.createCriteria(filterDto.criteria(), filter);
         log.info("Saved filter");
     }
 
@@ -40,7 +40,7 @@ public class FilterServiceImpl implements FilterService {
         List<Filter> filters = filterRepository.findAll();
         List<FilterDto> filterDtos = new ArrayList<>();
         for (Filter filter : filters) {
-            List<CriteriaDto> criteriaDtos = criteriaMapper.toDtoList(filter.getCriterias());
+            List<CriteriaDto> criteriaDtos = criteriaMapper.toDtoList(filter.getCriteria());
             FilterDto filterDto = new FilterDto(filter.getName(), criteriaDtos);
             filterDtos.add(filterDto);
         }

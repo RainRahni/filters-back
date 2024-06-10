@@ -8,5 +8,5 @@ import java.util.List;
 
 @Service
 public interface CriteriaService {
-    void createCriterias(List<CriteriaDto> criteriaDtos, Filter filter);
+    void createCriteria(List<CriteriaDto> criteriaDtos, Filter filter);
 }

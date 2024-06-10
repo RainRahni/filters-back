@@ -17,11 +17,11 @@ public class CriteriaServiceImpl implements CriteriaService {
     private final CriteriaRepository criteriaRepository;
     private final CriteriaMapper criteriaMapper;
     @Override
-    public void createCriterias(List<CriteriaDto> criteriaDtos, Filter filter) {
-        List<Criteria> criterias = criteriaMapper.toCriteriaList(criteriaDtos);
-        for (Criteria criteria : criterias) {
-            criteria.setFilter(filter);
-            criteriaRepository.save(criteria);
+    public void createCriteria(List<CriteriaDto> criteriaDtos, Filter filter) {
+        List<Criteria> criteria = criteriaMapper.toCriteriaList(criteriaDtos);
+        for (Criteria criterion : criteria) {
+            criterion.setFilter(filter);
+            criteriaRepository.save(criterion);
         }
         log.info("Saved criteria");
     }
