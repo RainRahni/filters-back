@@ -20,6 +20,8 @@ criteria. There are 3 criteria types: Amount, Title and Date.
 3. Run the application:
     - ./gradlew bootrun
 
+* Database connection information is in application.properties
+
 Springdoc: http://localhost:8080/swagger-ui/index.html#/
 
 ## Test data
@@ -34,3 +36,4 @@ Filter 2:
    - FilterTwo
    - Criteria:
       - Title, Starts with, Meow
+
