@@ -11,6 +11,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @Table(name = "criterias")
 public class Criteria {
     @Id
