@@ -25,6 +25,7 @@ public class FilterServiceImpl implements FilterService {
     private final FilterMapper filterMapper;
 
     @Override
+    @Transactional
     public void createNewFilter(FilterDto filterDto) {
         validationService.validateFilterCreation(filterDto);
         log.info("Create new filter");
