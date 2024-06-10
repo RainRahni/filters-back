@@ -35,6 +35,9 @@ public class ValidationServiceImpl implements ValidationService {
         if (isEnoughCriterias) {
             for (CriteriaDto criteriaDtos: filterDto.criterias()) {
                 isInvalidCriteria = validateCriteriaDto(criteriaDtos);
+                if (!isInvalidCriteria) {
+                    break;
+                }
             }
         }
         if (isInvalidFilterName || isInvalidCriteria || !isEnoughCriterias || !isUniqueFilter(filterDto)) {
@@ -53,14 +56,9 @@ public class ValidationServiceImpl implements ValidationService {
         if (isSomethingEmpty || !isCorrectType) {
             return true;
         }
-        for (String type: Constants.TYPES) {
-            Class<?> expectedClass = Constants.TYPE_METRIC_MAP.get(type);
-            Class<?> actualClass = getClassForParameter(criteriaDto.metric());
-            if (expectedClass.isAssignableFrom(actualClass)) {
-                return false;
-            }
-        }
-        return true;
+        Class<?> expectedClass = Constants.TYPE_METRIC_MAP.get(criteriaDto.type());
+        Class<?> actualClass = getClassForParameter(criteriaDto.metric());
+        return !expectedClass.isAssignableFrom(actualClass);
     }
     private Class<?> getClassForParameter(String parameter) {
         log.info("Validating parameter: {}", parameter);
