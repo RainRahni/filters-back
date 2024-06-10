@@ -12,19 +12,19 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createTable tableName="criterias">
+        <createTable tableName="criteria">
             <column autoIncrement="true" name="id" startWith="1" type="INTEGER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="criterias_pkey"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="criteria_pkey"/>
             </column>
             <column name="filter_id" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
             <column name="type" type="VARCHAR(255)"/>
-            <column name="comparator" type="VARCHAR(255)"/>
+            <column name="condition" type="VARCHAR(255)"/>
             <column name="metric" type="VARCHAR(255)"/>
         </createTable>
-        <addForeignKeyConstraint baseColumnNames="filter_id" baseTableName="criterias"
-                                 constraintName="fk_criterias_filter" referencedColumnNames="id"
+        <addForeignKeyConstraint baseColumnNames="filter_id" baseTableName="criteria"
+                                 constraintName="fk_criteria_filter" referencedColumnNames="id"
                                  referencedTableName="filters"/>
     </changeSet>
 </databaseChangeLog>

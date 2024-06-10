@@ -36,7 +36,7 @@ class ValidationServiceImplTest {
 
         Criteria criteria = Criteria.builder()
                 .type(CriteriaType.AMOUNT)
-                .comparator("More")
+                .condition("More")
                 .metric("4")
                 .build();
         when(criteriaMapper.toCriteriaList(List.of(criteriaDto))).thenReturn(List.of(criteria));
@@ -79,7 +79,7 @@ class ValidationServiceImplTest {
     @Test
     void Should_ThrowException_When_NotEnoughCriterias() {
         List<CriteriaDto> criteriaDtoList = new ArrayList<>();
-        for (int i = 0; i < Constants.MINIMUM_REQUIRED_CRITERIAS - 1; i++) {
+        for (int i = 0; i < Constants.MINIMUM_REQUIRED_CRITERIA - 1; i++) {
             CriteriaDto criteriaDto = new CriteriaDto("Amount", "More", String.format("%d", i));
             criteriaDtoList.add(criteriaDto);
         }
@@ -101,7 +101,7 @@ class ValidationServiceImplTest {
 
         Criteria criteria = Criteria.builder()
                 .type(CriteriaType.AMOUNT)
-                .comparator("More")
+                .condition("More")
                 .metric("4")
                 .build();
         Filter filter = Filter.builder()

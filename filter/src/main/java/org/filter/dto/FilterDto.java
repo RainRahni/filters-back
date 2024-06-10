@@ -2,5 +2,5 @@ package org.filter.dto;
 
 import java.util.List;
 
-public record FilterDto(String name, List<CriteriaDto> criterias){
+public record FilterDto(String name, List<CriteriaDto> criterias) {
 }

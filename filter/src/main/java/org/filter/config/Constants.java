@@ -16,6 +16,5 @@ public class Constants {
     public static final String DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}"; // 'YYYY-MM-DD'
     public static final List<String> TYPES = List.of("AMOUNT", "TITLE", "DATE");
     public static final String INVALID_INPUT_MESSAGE = "Invalid input!";
-    public static final int MINIMUM_REQUIRED_CRITERIAS = 1;
-
+    public static final int MINIMUM_REQUIRED_CRITERIA = 1;
 }

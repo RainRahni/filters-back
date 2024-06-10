@@ -31,23 +31,23 @@ public class ValidationServiceImpl implements ValidationService {
         boolean isInvalidFilterName = filterDto.name().isEmpty();
         boolean isInvalidCriteria = false;
 
-        boolean isEnoughCriterias = filterDto.criterias().size() >= Constants.MINIMUM_REQUIRED_CRITERIAS;
-        if (isEnoughCriterias) {
-            for (CriteriaDto criteriaDtos: filterDto.criterias()) {
-                isInvalidCriteria = validateCriteriaDto(criteriaDtos);
+        boolean isEnoughCriteria = filterDto.criterias().size() >= Constants.MINIMUM_REQUIRED_CRITERIA;
+        if (isEnoughCriteria) {
+            for (CriteriaDto criteriaDto: filterDto.criterias()) {
+                isInvalidCriteria = validateCriteriaDto(criteriaDto);
                 if (!isInvalidCriteria) {
                     break;
                 }
             }
         }
-        if (isInvalidFilterName || isInvalidCriteria || !isEnoughCriterias || !isUniqueFilter(filterDto)) {
+        if (isInvalidFilterName || isInvalidCriteria || !isEnoughCriteria || !isUniqueFilter(filterDto)) {
             throw new ValidationException(Constants.INVALID_INPUT_MESSAGE);
         }
     }
     private boolean validateCriteriaDto(CriteriaDto criteriaDto) {
         log.info("Validating criteria dto: {}", criteriaDto);
         boolean isSomethingEmpty = criteriaDto.type().isEmpty() ||
-                criteriaDto.comparator().isEmpty() ||
+                criteriaDto.condition().isEmpty() ||
                 criteriaDto.metric().isEmpty();
 
         boolean isCorrectType = Arrays.stream(CriteriaType.values())
@@ -72,12 +72,12 @@ public class ValidationServiceImpl implements ValidationService {
     private boolean isUniqueFilter(FilterDto filterDto) {
         boolean isNamePresent = filterRepository.existsByName(filterDto.name());
         List<Filter> existingFilters = filterRepository.findAll();
-        List<Criteria> newCriterias = criteriaMapperImpl.toCriteriaList(filterDto.criterias());
+        List<Criteria> newCriteria = criteriaMapperImpl.toCriteriaList(filterDto.criterias());
         boolean isUniqueCriterias = true;
         for (Filter existingFilter : existingFilters) {
-            log.info("checking existing criterias in database: {} and new filter criterias: {}",
-                    existingFilter.getCriterias(), newCriterias);
-            if (new HashSet<>(newCriterias).equals(new HashSet<>(existingFilter.getCriterias()))) {
+            log.info("Checking existing criteria in database: {} and new filter criteria: {}",
+                    existingFilter.getCriterias(), newCriteria);
+            if (new HashSet<>(newCriteria).equals(new HashSet<>(existingFilter.getCriterias()))) {
                 isUniqueCriterias = false;
                 break;
             }

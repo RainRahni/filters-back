@@ -7,7 +7,6 @@ import org.filter.dto.CriteriaDto;
 import org.filter.dto.FilterDto;
 import org.filter.mapper.CriteriaMapper;
 import org.filter.mapper.FilterMapper;
-import org.filter.model.Criteria;
 import org.filter.model.Filter;
 import org.filter.repository.FilterRepository;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package org.filter.service;
 
-import org.apache.tomcat.util.descriptor.web.FilterMap;
+import jakarta.validation.ValidationException;
 import org.filter.config.Constants;
 import org.filter.dto.CriteriaDto;
 import org.filter.dto.FilterDto;
@@ -16,11 +16,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import jakarta.validation.ValidationException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +47,7 @@ class FilterServiceImplTest {
         FilterDto filterDto = new FilterDto("TestFilter", criteriaDtoList);
         Criteria criteria = Criteria.builder()
                 .type(CriteriaType.AMOUNT)
-                .comparator("More")
+                .condition("More")
                 .metric("4")
                 .build();
         Filter filter = Filter.builder()
@@ -60,23 +62,20 @@ class FilterServiceImplTest {
         doNothing().when(criteriaService).createCriterias(anyList(), any(Filter.class));
 
         filterService.createNewFilter(filterDto);
-        String expectedName = filterDto.name();
-        int expectedCriteriasSize = 1;
-        Criteria expectedCriteria = criteria;
 
         verify(validationService, times(1)).validateFilterCreation(filterDto);
         verify(filterMapper, times(1)).toFilter(filterDto);
         verify(filterRepository, times(1)).save(filter);
         verify(criteriaService, times(1)).createCriterias(criteriaDtoList, filter);
 
-        assertEquals(expectedName, filter.getName());
-        assertEquals(expectedCriteriasSize, filter.getCriterias().size());
-        assertEquals(expectedCriteria, filter.getCriterias().get(0));
+        assertEquals(filterDto.name(), filter.getName());
+        assertEquals(1, filter.getCriterias().size());
+        assertEquals(criteria, filter.getCriterias().get(0));
     }
 
     @Test
     void Should_ThrowException_When_IncorrectInput() {
-        CriteriaDto criteriaDto = new CriteriaDto("NoTHIN","syke", "null");
+        CriteriaDto criteriaDto = new CriteriaDto("WrongType","WrongCondition", "WrongMetric");
         List<CriteriaDto> criteriaDtoList = new ArrayList<>();
         criteriaDtoList.add(criteriaDto);
         FilterDto filterDto = new FilterDto("", criteriaDtoList);

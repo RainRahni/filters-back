@@ -23,7 +23,7 @@ public class CriteriaServiceImpl implements CriteriaService {
             criteria.setFilter(filter);
             criteriaRepository.save(criteria);
         }
-        log.info("Saved criterias");
+        log.info("Saved criteria");
     }
 
 }

@@ -12,14 +12,14 @@ import java.util.Objects;
 @Getter
 @Setter
 @Builder
-@Table(name = "criterias")
+@Table(name = "criteria")
 public class Criteria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
     private CriteriaType type;
-    private String comparator;
+    private String condition;
     private String metric;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "filter_id")
@@ -31,12 +31,12 @@ public class Criteria {
         if (o == null || getClass() != o.getClass()) return false;
         Criteria criteria = (Criteria) o;
         return type == criteria.type
-                && Objects.equals(comparator, criteria.comparator)
+                && Objects.equals(condition, criteria.condition)
                 && Objects.equals(metric, criteria.metric);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, comparator, metric);
+        return Objects.hash(type, condition, metric);
     }
 }

@@ -1,12 +1,9 @@
 package org.filter.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ValidationException;
 import org.filter.dto.CriteriaDto;
 import org.filter.dto.FilterDto;
-import org.filter.model.Criteria;
-import org.filter.model.enums.CriteriaType;
 import org.filter.service.FilterServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,14 +12,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,14 +33,13 @@ class FilterControllerTest {
     @MockBean
     private FilterServiceImpl filterService;
     private ObjectMapper objectMapper;
-    private CriteriaDto criteriaDto;
     private FilterDto correctFilterDto;
     private FilterDto incorrectFilterDto;
     @BeforeEach
     void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
         objectMapper = new ObjectMapper();
-        criteriaDto = new CriteriaDto("AMOUNT", "More", "4");
+        CriteriaDto criteriaDto = new CriteriaDto("AMOUNT", "More", "4");
         correctFilterDto = new FilterDto("Test", List.of(criteriaDto));
         incorrectFilterDto = new FilterDto("", List.of(criteriaDto));
     }

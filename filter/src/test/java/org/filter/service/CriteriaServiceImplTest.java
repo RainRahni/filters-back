@@ -11,14 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.internal.verification.Times;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,7 +29,7 @@ class CriteriaServiceImplTest {
     private CriteriaServiceImpl criteriaService;
 
     @Test
-    void Should_SaveCriterias_When_CorrectInput() {
+    void Should_SaveCriteria_When_CorrectInput() {
         List<CriteriaDto> dtos = new ArrayList<>();
         Filter filter = new Filter();
         CriteriaDto criteriaDto = new CriteriaDto("Amount", "More", "4");
