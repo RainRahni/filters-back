@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.filter.model.enums.CriteriaType;
 
-import java.util.Objects;
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +11,7 @@ import java.util.Objects;
 @Setter
 @Builder
 @Table(name = "criteria")
+@EqualsAndHashCode(exclude = {"id", "filter"})
 public class Criteria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,19 +23,4 @@ public class Criteria {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "filter_id")
     private Filter filter;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Criteria criteria = (Criteria) o;
-        return type == criteria.type
-                && Objects.equals(condition, criteria.condition)
-                && Objects.equals(metric, criteria.metric);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(type, condition, metric);
-    }
 }

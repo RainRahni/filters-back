@@ -84,7 +84,7 @@ class ValidationServiceImplTest {
         assertEquals(Constants.INVALID_INPUT_MESSAGE, exception.getMessage());
     }
     @Test
-    void Should_ThrowException_When_NotEnoughCriterias() {
+    void Should_ThrowException_When_NotEnoughCriteria() {
         List<CriteriaDto> criteriaDtoList = new ArrayList<>();
         for (int i = 0; i < Constants.MINIMUM_REQUIRED_CRITERIA - 1; i++) {
             CriteriaDto criteriaDto = new CriteriaDto("Amount", "More", String.format("%d", i));
